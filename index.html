@@ -284,6 +284,8 @@
                 <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
                 <input type="hidden" name="_subject" value="Unclaimed Funds Inquiry — New Lead" />
                 <input type="hidden" name="_format" value="plain" />
+                <!-- Explicitly disable captcha so toggling it in dashboard doesn't break submissions -->
+                <input type="hidden" name="_captcha" value="false" />
                 <div class="form-row">
                   <div class="field">
                     <label for="fname">Your Name</label>
@@ -584,7 +586,7 @@
     navList.classList.remove('open');
   }));
 
-  /* ── Contact form → Formspree (AJAX) ── */
+  /* ── Contact form → Formspree (AJAX) with mailto fallback ── */
   async function handleSubmit(e) {
     e.preventDefault();
     const btn   = document.getElementById('submitBtn');
@@ -593,7 +595,14 @@
     btn.disabled    = true;
     btn.textContent = 'Sending…';
 
-    const data = new FormData(e.target);
+    const form = e.target;
+    const data = new FormData(form);
+    const name    = data.get('name')    || '';
+    const company = data.get('company') || '';
+    const email   = data.get('_replyto') || '';
+    const message = data.get('message') || '';
+
+    let success = false;
 
     try {
       const res = await fetch(FORMSPREE_URL, {
@@ -601,16 +610,34 @@
         body:    data,
         headers: { 'Accept': 'application/json' },
       });
-
       if (res.ok) {
-        document.getElementById('formBody').style.display    = 'none';
-        document.getElementById('formSuccess').style.display = 'block';
+        success = true;
       } else {
-        throw new Error('non-200');
+        // Log the actual Formspree error to console for debugging
+        const body = await res.json().catch(() => ({}));
+        console.warn('Formspree error:', res.status, body);
       }
-    } catch (_) {
+    } catch (err) {
+      console.warn('Formspree fetch failed:', err);
+    }
+
+    if (success) {
+      document.getElementById('formBody').style.display    = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    } else {
+      // Formspree failed — open mailto as fallback so the lead is never lost
+      const sub  = encodeURIComponent('Unclaimed Funds Inquiry — ' + (company || 'New Lead'));
+      const body = encodeURIComponent(
+        'Name: '    + name    + '\n' +
+        'Company: ' + company + '\n' +
+        'Email: '   + email   + '\n\n' +
+        'Message:\n' + (message || '(none)')
+      );
+      window.location.href = 'mailto:brett@deavilaresearch.com?subject=' + sub + '&body=' + body;
+
       btn.disabled    = false;
       btn.textContent = 'Submit Inquiry';
+      errEl.innerHTML = 'Having trouble? Your email client has opened as a backup. Or reach us directly at <a href="mailto:brett@deavilaresearch.com" style="color:#c9a96e;">brett@deavilaresearch.com</a>';
       errEl.style.display = 'block';
     }
   }
