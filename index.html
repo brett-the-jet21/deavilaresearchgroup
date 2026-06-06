@@ -385,8 +385,9 @@
 
   /* ── Starfield with shooting stars ── */
   (function () {
-    const canvas = document.getElementById('starfield');
-    const ctx    = canvas.getContext('2d', { alpha: true, desynchronized: true });
+    const canvas  = document.getElementById('starfield');
+    const ctx     = canvas.getContext('2d', { alpha: true, desynchronized: true });
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
     let W, H, stars = [], shooters = [], raf, frame = 0;
 
     // Offscreen canvas for static star layer — only redrawn every 3 frames
@@ -402,18 +403,16 @@
     }
 
     function initStars() {
-      // 1 star per 8000px² — enough visual density, less compute
-      const n = Math.floor(W * H / 8000);
+      const density = isMobile ? 10000 : 8000;
+      const n = Math.floor(W * H / density);
       stars = Array.from({ length: n }, () => ({
         x:   Math.random() * W,
         y:   Math.random() * H,
         r:   Math.random() * 0.9 + 0.2,
-        // Pre-bucket alpha into 5 levels to batch draw calls
         a:   Math.round((Math.random() * 0.45 + 0.08) * 5) / 5,
         spd: Math.random() * 0.002 + 0.0005,
         ph:  Math.random() * 6.283,
       }));
-      // Pre-sort by base alpha so we can batch fillStyle changes
       stars.sort((a, b) => a.a - b.a);
     }
 
@@ -422,7 +421,6 @@
       let lastAlpha = -1;
       offCtx.fillStyle = '#b4ccee';
       for (const s of stars) {
-        // Fast sine approximation using precomputed phase
         const a = s.a * (0.38 + 0.62 * Math.sin(t * s.spd + s.ph));
         if (Math.abs(a - lastAlpha) > 0.04) {
           offCtx.globalAlpha = a;
@@ -435,23 +433,84 @@
       offCtx.globalAlpha = 1;
     }
 
+    // Pre-bake shooting star to tiny offscreen canvas — called ONCE per spawn,
+    // not every frame. Eliminates createLinearGradient overhead from the draw loop.
+    function bakeShooter(vx, vy, len) {
+      const slope  = vy / vx;                 // always positive (down-right)
+      const pad    = 6;
+      const bw     = Math.ceil(len) + pad * 2;
+      const bh     = Math.ceil(len * slope) + pad * 2;
+      const bc     = document.createElement('canvas');
+      bc.width = bw; bc.height = bh;
+      const bx     = bc.getContext('2d');
+
+      // Tip = leading edge (right side), tail = trailing (left side)
+      const tx = bw - pad, ty = pad;           // tip coords in baked canvas
+      const ex = pad,      ey = bh - pad;      // tail end
+
+      // Outer glow pass (wide, dim) — gives depth without shadowBlur cost
+      const gGlow = bx.createLinearGradient(tx, ty, ex, ey);
+      gGlow.addColorStop(0, 'rgba(255,245,200,0.35)');
+      gGlow.addColorStop(0.3, 'rgba(201,169,110,0.12)');
+      gGlow.addColorStop(1, 'rgba(201,169,110,0)');
+      bx.strokeStyle = gGlow;
+      bx.lineWidth   = isMobile ? 6 : 9;
+      bx.lineCap     = 'round';
+      bx.beginPath();
+      bx.moveTo(tx, ty);
+      bx.lineTo(ex, ey);
+      bx.stroke();
+
+      // Core bright trail
+      const gCore = bx.createLinearGradient(tx, ty, ex, ey);
+      gCore.addColorStop(0,    'rgba(255,252,235,1)');
+      gCore.addColorStop(0.08, 'rgba(230,200,140,0.95)');
+      gCore.addColorStop(0.4,  'rgba(201,169,110,0.6)');
+      gCore.addColorStop(1,    'rgba(201,169,110,0)');
+      bx.strokeStyle = gCore;
+      bx.lineWidth   = isMobile ? 2 : 2.5;
+      bx.beginPath();
+      bx.moveTo(tx, ty);
+      bx.lineTo(ex, ey);
+      bx.stroke();
+
+      // Bright white tip dot
+      const tipR = isMobile ? 2.5 : 3;
+      bx.fillStyle = 'rgba(255,255,255,0.98)';
+      bx.beginPath();
+      bx.arc(tx, ty, tipR, 0, 6.2832);
+      bx.fill();
+
+      // Soft halo around tip
+      const halo = bx.createRadialGradient(tx, ty, 0, tx, ty, tipR * 4);
+      halo.addColorStop(0, 'rgba(255,245,200,0.5)');
+      halo.addColorStop(1, 'rgba(255,245,200,0)');
+      bx.fillStyle = halo;
+      bx.beginPath();
+      bx.arc(tx, ty, tipR * 4, 0, 6.2832);
+      bx.fill();
+
+      return { canvas: bc, tipX: tx, tipY: ty };
+    }
+
     function spawnShooter() {
-      if (document.hidden) return;
+      if (document.hidden || shooters.length >= (isMobile ? 2 : 3)) return;
+      const vx  = (isMobile ? 4.5 : 5.5) + Math.random() * 4;
+      const vy  = 1.6 + Math.random() * 2.2;
+      const len = isMobile
+        ? 130 + Math.random() * 90
+        : 220 + Math.random() * 160;
       shooters.push({
-        x: Math.random() * W * 0.65,
-        y: Math.random() * H * 0.4,
-        vx: 5 + Math.random() * 5,
-        vy: 1.8 + Math.random() * 2,
-        len: 85 + Math.random() * 65,
-        life: 1,
+        x:     Math.random() * W * 0.6,
+        y:     Math.random() * H * 0.38,
+        vx, vy, life: 1,
+        baked: bakeShooter(vx, vy, len),
       });
     }
 
     function draw(t) {
       frame++;
-      const hasShooters = shooters.length > 0;
 
-      // Redraw star layer every 3rd frame — twinkling at ~20fps is imperceptible
       if (frame % 3 === 0 || offDirty) {
         drawStars(t);
         offDirty = false;
@@ -460,26 +519,17 @@
       ctx.clearRect(0, 0, W, H);
       ctx.drawImage(off, 0, 0);
 
-      if (hasShooters) {
-        ctx.globalAlpha = 1;
-        for (let i = shooters.length - 1; i >= 0; i--) {
-          const s = shooters[i];
-          const slope = s.vy / s.vx;
-          const grad  = ctx.createLinearGradient(s.x, s.y, s.x - s.len, s.y - s.len * slope);
-          grad.addColorStop(0, `rgba(201,169,110,${(s.life * 0.85).toFixed(2)})`);
-          grad.addColorStop(1, 'rgba(201,169,110,0)');
-          ctx.beginPath();
-          ctx.moveTo(s.x, s.y);
-          ctx.lineTo(s.x - s.len, s.y - s.len * slope);
-          ctx.strokeStyle = grad;
-          ctx.lineWidth   = 1.5;
-          ctx.stroke();
-          s.x    += s.vx;
-          s.y    += s.vy;
-          s.life -= 0.022;
-          if (s.life <= 0 || s.x > W + 10 || s.y > H + 10) shooters.splice(i, 1);
-        }
+      // Draw pre-baked shooters — just a cheap drawImage per star per frame
+      for (let i = shooters.length - 1; i >= 0; i--) {
+        const s = shooters[i];
+        ctx.globalAlpha = Math.min(1, s.life * 1.1);
+        ctx.drawImage(s.baked.canvas, s.x - s.baked.tipX, s.y - s.baked.tipY);
+        s.x    += s.vx;
+        s.y    += s.vy;
+        s.life -= 0.02;
+        if (s.life <= 0 || s.x > W + 20 || s.y > H + 20) shooters.splice(i, 1);
       }
+      ctx.globalAlpha = 1;
 
       raf = requestAnimationFrame(draw);
     }
@@ -497,8 +547,11 @@
 
     resize();
     raf = requestAnimationFrame(draw);
-    setInterval(spawnShooter, 4000);
-    setTimeout(spawnShooter, 1500);
+
+    const interval = isMobile ? 3200 : 2800;
+    setInterval(spawnShooter, interval);
+    setTimeout(spawnShooter, 800);
+    setTimeout(spawnShooter, 2200);
   })();
 
   /* ── Scroll reveal ── */
