@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://deavilaresearch.com/sitemap.xml
