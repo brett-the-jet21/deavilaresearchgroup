@@ -282,7 +282,8 @@
               <form id="contactForm" onsubmit="handleSubmit(event)">
                 <!-- Honeypot — bots fill this, humans don't, Formspree ignores real submissions -->
                 <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
-                <input type="hidden" name="_subject" value="New Unclaimed Funds Inquiry" />
+                <input type="hidden" name="_subject" value="Unclaimed Funds Inquiry — New Lead" />
+                <input type="hidden" name="_format" value="plain" />
                 <div class="form-row">
                   <div class="field">
                     <label for="fname">Your Name</label>
@@ -295,7 +296,8 @@
                 </div>
                 <div class="field">
                   <label for="femail">Email Address</label>
-                  <input type="email" id="femail" name="email" placeholder="jane@acmecorp.com" required autocomplete="email" />
+                  <!-- _replyto tells Formspree this is the sender — prevents spam flagging -->
+                  <input type="email" id="femail" name="_replyto" placeholder="jane@acmecorp.com" required autocomplete="email" />
                 </div>
                 <div class="field">
                   <label for="message">Message <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#6b7f96;">(Optional)</span></label>
