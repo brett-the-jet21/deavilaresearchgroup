@@ -4,27 +4,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="de Avila Research Group LLC identifies and recovers unclaimed funds held by the California State Controller's Office for businesses — on a pure contingency basis. No upfront cost." />
-  <meta name="keywords" content="unclaimed funds California, California State Controller's Office, unclaimed property recovery, business unclaimed money, contingency recovery" />
-  <meta property="og:title" content="de Avila Research Group LLC — Recover Your Unclaimed Funds" />
-  <meta property="og:description" content="We find and recover unclaimed business funds held by the California State Controller's Office. No upfront cost — contingency only." />
+  <meta name="keywords" content="unclaimed funds California, California State Controller's Office, unclaimed property recovery, business unclaimed money" />
+  <meta property="og:title" content="de Avila Research Group LLC" />
+  <meta property="og:description" content="We recover unclaimed business funds from the California State Controller's Office. Contingency only — no upfront cost." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://deavilaresearch.com" />
-  <title>de Avila Research Group LLC — Unclaimed Funds Recovery</title>
+  <title>de Avila Research Group LLC</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
+  <!-- Patriotic accent bar -->
+  <div class="flag-bar"></div>
+
+  <!-- Starfield canvas -->
+  <canvas id="starfield"></canvas>
+
   <!-- ── Navbar ── -->
   <nav id="navbar">
     <div class="nav-inner">
-      <div class="nav-logo">de Avila<br><span>Research Group LLC</span></div>
+      <div class="nav-logo">
+        <div class="nav-logo-name">de Avila Research Group</div>
+        <div class="nav-logo-sub">LLC &nbsp;·&nbsp; Est. California</div>
+      </div>
       <ul class="nav-links" id="navLinks">
-        <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#why-us">Why Us</a></li>
-        <li><a href="#contact" class="nav-cta">Get Started</a></li>
+        <li><a href="#how-it-works">Process</a></li>
+        <li><a href="#why-us">About</a></li>
+        <li><a href="#contact" class="nav-cta-link">Inquire</a></li>
       </ul>
-      <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -32,33 +44,42 @@
 
   <!-- ── Hero ── -->
   <section id="hero">
+    <div class="hero-glow"></div>
     <div class="container">
       <div class="hero-content">
-        <div class="hero-badge">California Unclaimed Property Specialists</div>
+        <div class="hero-seal">⚖️</div>
+        <span class="eyebrow">California Unclaimed Property Recovery</span>
         <h1 class="hero-headline">
-          Your Business May Have<br><em>Unclaimed Funds</em><br>Sitting in Sacramento
+          Your Business Is Owed<br>
+          Money That the State<br>
+          <span class="accent">Is Holding for You</span>
         </h1>
+        <div class="hero-rule"></div>
         <p class="hero-sub">
-          The California State Controller's Office holds millions in unclaimed funds belonging to businesses like yours. We find them, file the paperwork, and recover them — at zero upfront cost.
+          The California State Controller's Office holds billions in unclaimed funds belonging to businesses across the state. de Avila Research Group identifies what is rightfully yours and handles every step of the recovery — at no upfront cost.
         </p>
         <div class="hero-actions">
-          <a href="#contact" class="btn btn-primary">See If You Have Unclaimed Funds</a>
-          <button class="btn-ghost" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})">
-            Learn how it works →
+          <a href="#contact" class="btn-primary">See If You Have Unclaimed Funds</a>
+          <button class="btn-outline" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})">
+            Our Process &rarr;
           </button>
         </div>
         <div class="hero-stats">
-          <div class="stat">
+          <div class="stat-item">
             <strong>$0</strong>
             <span>Upfront Cost</span>
           </div>
-          <div class="stat">
+          <div class="stat-item">
             <strong>100%</strong>
-            <span>Contingency</span>
+            <span>Contingency Basis</span>
           </div>
-          <div class="stat">
+          <div class="stat-item">
             <strong>CA SCO</strong>
             <span>Specialists</span>
+          </div>
+          <div class="stat-item">
+            <strong>All CA</strong>
+            <span>Businesses Served</span>
           </div>
         </div>
       </div>
@@ -68,29 +89,34 @@
   <!-- ── How It Works ── -->
   <section id="how-it-works">
     <div class="container">
-      <div class="section-header">
-        <span class="label">The Process</span>
-        <h2 class="section-title">Three Steps to Recover Your Funds</h2>
-        <p class="section-sub">We manage the entire process from research to disbursement. Your participation is minimal — your result is real.</p>
+      <div class="section-header centered">
+        <span class="eyebrow">Our Process</span>
+        <h2 class="serif-title" style="font-size:clamp(2rem,4vw,3rem); margin-bottom:20px;">
+          Three Steps. Zero Risk.
+        </h2>
+        <p class="body-text">We manage the recovery from identification to disbursement. Your involvement is minimal. Your result is real.</p>
       </div>
-      <div class="steps">
-        <div class="step">
-          <div class="step-num">01</div>
-          <div class="step-icon">🔍</div>
+      <div class="process-grid">
+        <div class="process-card">
+          <div class="process-number">I</div>
+          <span class="process-step-label">Step One</span>
+          <div class="process-icon">🔍</div>
           <h3>We Find It</h3>
-          <p>We search the California State Controller's Office database to locate unclaimed property — checks, deposits, refunds — that legally belongs to your business. No search fee, ever.</p>
+          <p>We conduct a thorough search of the California State Controller's Office unclaimed property database to identify funds — checks, refunds, deposits — that legally belong to your business. This search costs you nothing.</p>
         </div>
-        <div class="step">
-          <div class="step-num">02</div>
-          <div class="step-icon">✍️</div>
+        <div class="process-card">
+          <div class="process-number">II</div>
+          <span class="process-step-label">Step Two</span>
+          <div class="process-icon">✍️</div>
           <h3>You Sign</h3>
-          <p>We prepare every required claim form and gather supporting documentation. You review and sign. We handle all correspondence with the state on your behalf.</p>
+          <p>We prepare every required claim form and compile all supporting documentation. You review and sign. We handle all filing and correspondence with the state on your behalf — no bureaucratic burden on you.</p>
         </div>
-        <div class="step">
-          <div class="step-num">03</div>
-          <div class="step-icon">💰</div>
+        <div class="process-card">
+          <div class="process-number">III</div>
+          <span class="process-step-label">Step Three</span>
+          <div class="process-icon">🏛️</div>
           <h3>We Recover It</h3>
-          <p>Once the state releases your funds, you receive your money. We collect our fee only after you've been paid — that's the contingency promise, guaranteed.</p>
+          <p>Once the state approves and releases your funds, you receive your money. Our fee is collected only after you have been paid in full. No recovery means no fee — that is the contingency guarantee.</p>
         </div>
       </div>
     </div>
@@ -99,47 +125,55 @@
   <!-- ── Why Us ── -->
   <section id="why-us">
     <div class="container">
-      <div class="why-grid">
-        <div class="why-text">
-          <span class="label">Why Choose Us</span>
-          <h2 class="section-title">No Risk. No Hassle.<br>No Upfront Cost.</h2>
-          <p class="section-sub">We built our practice around a single principle: you should never have to pay to get back what's already yours.</p>
-          <div class="reasons">
-            <div class="reason">
-              <div class="reason-icon">💼</div>
-              <div>
+      <div class="why-layout">
+        <div class="why-left">
+          <span class="eyebrow">Why de Avila Research Group</span>
+          <h2 class="serif-title" style="font-size:clamp(1.9rem,3.5vw,2.8rem); margin-bottom:20px;">
+            Institutional Expertise.<br>Your Interests First.
+          </h2>
+          <p class="body-text">We were built on a single conviction: businesses should never have to pay to reclaim what is already theirs.</p>
+          <div class="pillars">
+            <div class="pillar">
+              <div class="pillar-icon">💼</div>
+              <div class="pillar-body">
                 <h4>Pure Contingency — No Upfront Fees</h4>
-                <p>We earn our fee only when you receive your funds. If we recover nothing, you owe us nothing.</p>
+                <p>Our fee is earned only upon successful recovery. If we find nothing or the claim fails, you owe us nothing.</p>
               </div>
             </div>
-            <div class="reason">
-              <div class="reason-icon">📋</div>
-              <div>
-                <h4>We Handle Everything</h4>
-                <p>Research, paperwork, state correspondence — we manage the entire claim process from start to finish.</p>
+            <div class="pillar">
+              <div class="pillar-icon">📁</div>
+              <div class="pillar-body">
+                <h4>Full-Service Case Management</h4>
+                <p>From research through disbursement, we manage every step — filing, follow-up, and state correspondence included.</p>
               </div>
             </div>
-            <div class="reason">
-              <div class="reason-icon">🏛️</div>
-              <div>
+            <div class="pillar">
+              <div class="pillar-icon">🏛️</div>
+              <div class="pillar-body">
                 <h4>California SCO Specialists</h4>
-                <p>We focus exclusively on the California State Controller's Office unclaimed property program — deep expertise, faster results.</p>
+                <p>We work exclusively within the California State Controller's Office unclaimed property program — focused expertise, faster outcomes.</p>
               </div>
             </div>
-            <div class="reason">
-              <div class="reason-icon">✅</div>
-              <div>
-                <h4>Licensed in California</h4>
-                <p>We operate in full compliance with California unclaimed property law, so your claim is handled correctly the first time.</p>
+            <div class="pillar">
+              <div class="pillar-icon">✅</div>
+              <div class="pillar-body">
+                <h4>Licensed &amp; Compliant in California</h4>
+                <p>We operate in full compliance with California unclaimed property law. Your claim is handled correctly from day one.</p>
               </div>
             </div>
           </div>
         </div>
-        <div class="why-card">
-          <div class="accent">🏆</div>
-          <h3>Ready to Find Out What's Yours?</h3>
-          <p>It takes just a few minutes to get started. If there are funds, we'll find them. If there aren't, you'll know — for free, with no obligation.</p>
-          <a href="#contact" class="btn btn-primary">Start Your Free Search</a>
+        <div class="why-aside">
+          <div class="quote-card">
+            <div class="quote-mark">&ldquo;</div>
+            <p class="quote-text">Every year, billions of dollars in unclaimed funds sit with the California State Controller's Office — waiting for businesses like yours to claim them. Most never do, simply because they don't know where to look.</p>
+            <div class="quote-attr">de Avila Research Group LLC</div>
+          </div>
+          <div class="cta-card">
+            <h3>Your Funds May Already Be There</h3>
+            <p>A no-cost search takes minutes. If unclaimed property exists in your name, we will find it and recover it.</p>
+            <a href="#contact" class="btn-dark">Begin Your Free Search</a>
+          </div>
         </div>
       </div>
     </div>
@@ -148,63 +182,67 @@
   <!-- ── Contact ── -->
   <section id="contact">
     <div class="container">
-      <div class="contact-grid">
-        <div class="contact-info">
-          <span class="label">Get In Touch</span>
-          <h2 class="section-title">Let's Find Your Unclaimed Funds</h2>
-          <p class="section-sub">Send us your information and we'll research the California SCO records for your business — for free, with no obligation.</p>
-          <div class="contact-detail">
-            <div class="detail-icon">✉️</div>
-            <div class="detail-text">
-              <strong>Email</strong>
-              <span><a href="mailto:brett@deavilaresearch.com">brett@deavilaresearch.com</a></span>
+      <div class="contact-layout">
+        <div class="contact-meta">
+          <span class="eyebrow">Contact</span>
+          <h2 class="serif-title" style="font-size:clamp(1.9rem,3.5vw,2.8rem); margin-bottom:20px;">
+            Let Us Search<br>on Your Behalf
+          </h2>
+          <p class="body-text">Submit your business information and we will conduct a complimentary search of the California SCO database. No obligation. No cost. Just answers.</p>
+          <div style="margin-top:40px;">
+            <div class="contact-item">
+              <div class="contact-icon">✉️</div>
+              <div class="contact-item-text">
+                <strong>Direct Email</strong>
+                <span><a href="mailto:brett@deavilaresearch.com">brett@deavilaresearch.com</a></span>
+              </div>
             </div>
-          </div>
-          <div class="contact-detail">
-            <div class="detail-icon">📍</div>
-            <div class="detail-text">
-              <strong>Serving</strong>
-              <span>All California Businesses</span>
+            <div class="contact-item">
+              <div class="contact-icon">📍</div>
+              <div class="contact-item-text">
+                <strong>Jurisdiction</strong>
+                <span>All California Businesses</span>
+              </div>
             </div>
-          </div>
-          <div class="contact-detail">
-            <div class="detail-icon">⏱️</div>
-            <div class="detail-text">
-              <strong>Response Time</strong>
-              <span>Within 1 business day</span>
+            <div class="contact-item">
+              <div class="contact-icon">⏱️</div>
+              <div class="contact-item-text">
+                <strong>Response Time</strong>
+                <span>Within 1 Business Day</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="contact-form" id="contactFormWrap">
+        <div class="form-panel" id="formPanel">
           <div id="formBody">
-            <form action="mailto:brett@deavilaresearch.com" method="post" enctype="text/plain" id="contactForm" onsubmit="handleSubmit(event)">
+            <form id="contactForm" onsubmit="handleSubmit(event)">
               <div class="form-row">
-                <div class="form-group">
+                <div class="field">
                   <label for="name">Your Name</label>
                   <input type="text" id="name" name="name" placeholder="Jane Smith" required autocomplete="name" />
                 </div>
-                <div class="form-group">
+                <div class="field">
                   <label for="company">Company Name</label>
-                  <input type="text" id="company" name="company" placeholder="Acme Corp" required autocomplete="organization" />
+                  <input type="text" id="company" name="company" placeholder="Acme Corporation" required autocomplete="organization" />
                 </div>
               </div>
-              <div class="form-group">
+              <div class="field">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" placeholder="jane@acmecorp.com" required autocomplete="email" />
               </div>
-              <div class="form-group">
-                <label for="message">Message (Optional)</label>
-                <textarea id="message" name="message" placeholder="Any additional details or questions…"></textarea>
+              <div class="field">
+                <label for="message">Message <span style="font-weight:400;text-transform:none;letter-spacing:0;">(Optional)</span></label>
+                <textarea id="message" name="message" placeholder="Any additional context about your business or the funds you may be owed…"></textarea>
               </div>
-              <button type="submit" class="btn btn-primary btn-submit">Send My Information</button>
+              <button type="submit" class="btn-primary form-submit">Submit Inquiry</button>
             </form>
-            <p class="form-note">No upfront cost. No obligation. We'll be in touch within 1 business day.</p>
+            <p class="form-note">No upfront cost &nbsp;·&nbsp; No obligation &nbsp;·&nbsp; Confidential</p>
           </div>
           <div class="form-success" id="formSuccess">
             <div class="success-icon">✅</div>
-            <h3>We've Received Your Information</h3>
-            <p>Thank you! We'll research the California SCO records for your business and follow up within 1 business day.</p>
+            <h3>Inquiry Received</h3>
+            <p>Thank you. We will research the California SCO records for your business and respond within one business day.</p>
           </div>
         </div>
       </div>
@@ -214,49 +252,102 @@
   <!-- ── Footer ── -->
   <footer>
     <div class="container">
-      <div class="footer-inner">
-        <div class="footer-logo">de Avila <span>Research Group LLC</span></div>
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand-name">de Avila Research Group LLC</div>
+          <div class="footer-brand-sub">California Unclaimed Property Recovery</div>
+        </div>
         <ul class="footer-links">
-          <li><a href="#how-it-works">How It Works</a></li>
-          <li><a href="#why-us">Why Us</a></li>
+          <li><a href="#how-it-works">Process</a></li>
+          <li><a href="#why-us">About</a></li>
           <li><a href="#contact">Contact</a></li>
+          <li><a href="mailto:brett@deavilaresearch.com">Email Us</a></li>
         </ul>
       </div>
       <p class="footer-copy">
         &copy; 2024 de Avila Research Group LLC. All rights reserved.
-        de Avila Research Group LLC is not affiliated with the California State Controller's Office.
+        de Avila Research Group LLC is an independent recovery firm and is not affiliated with or endorsed by the California State Controller's Office.
       </p>
     </div>
   </footer>
 
   <script>
-    // Mobile nav
+    /* ── Starfield ── */
+    (function () {
+      const canvas = document.getElementById('starfield');
+      const ctx    = canvas.getContext('2d');
+      let stars    = [];
+      let W, H;
+
+      function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+
+      function initStars() {
+        stars = [];
+        const count = Math.floor((W * H) / 5000);
+        for (let i = 0; i < count; i++) {
+          stars.push({
+            x:       Math.random() * W,
+            y:       Math.random() * H,
+            r:       Math.random() * 1.2 + 0.2,
+            alpha:   Math.random() * 0.6 + 0.1,
+            speed:   Math.random() * 0.003 + 0.001,
+            phase:   Math.random() * Math.PI * 2,
+          });
+        }
+      }
+
+      function draw(t) {
+        ctx.clearRect(0, 0, W, H);
+        for (const s of stars) {
+          const a = s.alpha * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${lerp(160,220,s.alpha)}, ${lerp(170,230,s.alpha)}, 255, ${a})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      function lerp(a, b, t) { return Math.round(a + (b - a) * t); }
+
+      window.addEventListener('resize', () => { resize(); initStars(); });
+      resize();
+      initStars();
+      requestAnimationFrame(draw);
+    })();
+
+    /* ── Mobile Nav ── */
     const hamburger = document.getElementById('hamburger');
     const navLinks  = document.getElementById('navLinks');
     hamburger.addEventListener('click', () => {
       hamburger.classList.toggle('open');
       navLinks.classList.toggle('open');
     });
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
         hamburger.classList.remove('open');
         navLinks.classList.remove('open');
       });
     });
 
-    // Navbar shadow
+    /* ── Navbar elevation on scroll ── */
     window.addEventListener('scroll', () => {
       document.getElementById('navbar').style.boxShadow =
-        window.scrollY > 20 ? '0 2px 20px rgba(0,0,0,0.45)' : '';
+        window.scrollY > 20 ? '0 2px 32px rgba(0,0,0,0.6)' : '';
     });
 
-    // Form submit — opens mail client, shows success state
+    /* ── Form ── */
     function handleSubmit(e) {
       e.preventDefault();
       const name    = document.getElementById('name').value.trim();
       const company = document.getElementById('company').value.trim();
       const email   = document.getElementById('email').value.trim();
       const message = document.getElementById('message').value.trim();
+
+      if (!name || !company || !email) return;
 
       const subject = encodeURIComponent('Unclaimed Funds Inquiry — ' + company);
       const body    = encodeURIComponent(
@@ -272,7 +363,7 @@
       setTimeout(() => {
         document.getElementById('formBody').style.display    = 'none';
         document.getElementById('formSuccess').style.display = 'block';
-      }, 600);
+      }, 700);
     }
   </script>
 </body>
