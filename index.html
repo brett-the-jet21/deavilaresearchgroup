@@ -13,9 +13,8 @@
   <!-- Preconnect for fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Load fonts non-blocking; noscript fallback keeps layout stable -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600&display=swap" /></noscript>
+  <!-- Blocking load so logo never flashes unstyled -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -222,7 +221,7 @@
         <div class="why-right reveal reveal-delay-2">
           <div class="manifesto-block">
             <div class="manifesto-quote">
-              "Every year, billions sit with the California State Controller's Office — waiting for businesses like yours to claim them. Most never do, simply because they don't know where to look."
+              "The California State Controller's Office does not hunt you down to return what it owes you. It holds it, indefinitely, until someone fights to get it back. That is what we do."
             </div>
             <div class="manifesto-attr">de Avila Research Group LLC</div>
           </div>
