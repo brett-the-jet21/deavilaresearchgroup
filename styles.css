@@ -34,33 +34,8 @@ body {
   cursor: none;
 }
 
-/* ── Custom Cursor ── */
-.cursor {
-  position: fixed;
-  top: -4px; left: -4px;          /* offset so (0,0) translate = center on pointer */
-  width: 8px; height: 8px;
-  background: var(--gold);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  will-change: transform;
-  /* Only animate size changes, not transform — transform is driven by JS */
-  transition: width 0.25s, height 0.25s;
-  mix-blend-mode: difference;
-}
-.cursor-ring {
-  position: fixed;
-  top: -18px; left: -18px;        /* offset so (0,0) translate = center on pointer */
-  width: 36px; height: 36px;
-  border: 1px solid rgba(201,169,110,0.4);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  will-change: transform;
-  transition: width 0.25s, height 0.25s, border-color 0.25s;
-}
-.cursor.hover      { width: 16px; height: 16px; }
-.cursor-ring.hover { width: 56px; height: 56px; border-color: rgba(201,169,110,0.7); }
+/* Custom cursor removed — was competing with canvas rAF every frame */
+.cursor, .cursor-ring { display: none; }
 @media (hover: none) { .cursor, .cursor-ring { display: none; } }
 @media (hover: none) { body { cursor: auto; } }
 
@@ -280,40 +255,18 @@ body {
   pointer-events: none;
   overflow: hidden;
 }
-.aurora-orb {
+/* Static gradient instead of animated blur — visually identical, zero GPU cost */
+.aurora-orb { display: none; }
+
+#hero::after {
+  content: '';
   position: absolute;
-  border-radius: 50%;
-  /* Reduced from 80px — blur is the single most expensive CSS property */
-  filter: blur(48px);
-  /* Promote to own compositor layer so blur doesn't repaint the page */
-  will-change: transform;
-  animation: drift 20s ease-in-out infinite alternate;
-}
-.aurora-orb-1 {
-  width: 600px; height: 420px;
-  background: radial-gradient(ellipse, rgba(20,60,120,0.45) 0%, transparent 70%);
-  top: -80px; right: -80px;
-  animation-delay: 0s;
-}
-.aurora-orb-2 {
-  width: 440px; height: 360px;
-  background: radial-gradient(ellipse, rgba(60,30,10,0.22) 0%, transparent 70%);
-  bottom: 0; left: 8%;
-  animation-delay: -7s;
-}
-.aurora-orb-3 {
-  width: 520px; height: 300px;
-  background: radial-gradient(ellipse, rgba(10,40,90,0.28) 0%, transparent 70%);
-  top: 40%; left: 50%;
-  transform: translate(-50%,-50%);
-  animation-delay: -13s;
-  animation-duration: 24s;
-}
-/* Only translate — no scale — keeps compositor happy */
-@keyframes drift {
-  0%   { transform: translate(0,0); }
-  50%  { transform: translate(36px,-26px); }
-  100% { transform: translate(-18px,18px); }
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 60% at 75% 30%, rgba(20,60,120,0.35) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(60,30,10,0.18) 0%, transparent 60%);
 }
 
 .hero-content {
@@ -359,16 +312,7 @@ body {
   margin-bottom: 32px;
 }
 .hero-headline .shimmer {
-  background: linear-gradient(135deg, var(--gold-dim) 0%, var(--gold-bright) 40%, var(--gold-dim) 80%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 4s linear infinite;
-}
-@keyframes shimmer {
-  0%   { background-position: 0% center; }
-  100% { background-position: 200% center; }
+  color: var(--gold);
 }
 
 .hero-rule {

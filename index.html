@@ -19,9 +19,6 @@
 </head>
 <body>
 
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
-
   <div class="flag-bar"></div>
   <div class="scroll-progress" id="scrollProgress"></div>
   <canvas id="starfield"></canvas>
@@ -357,28 +354,6 @@
   const FORMSPREE_URL = 'https://formspree.io/f/xzdqezpn';
   // ───────────────────────────────────────────────────────────────────────────
 
-  /* ── Custom cursor (desktop only) ── */
-  if (window.matchMedia('(hover: hover)').matches) {
-    const cursor     = document.getElementById('cursor');
-    const cursorRing = document.getElementById('cursorRing');
-    // Start off-screen
-    cursor.style.transform     = 'translate(-200px,-200px)';
-    cursorRing.style.transform = 'translate(-200px,-200px)';
-    let mx = -200, my = -200, rx = -200, ry = -200;
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
-    document.querySelectorAll('a, button, .process-card, .pillar').forEach(el => {
-      el.addEventListener('mouseenter', () => { cursor.classList.add('hover'); cursorRing.classList.add('hover'); });
-      el.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); cursorRing.classList.remove('hover'); });
-    });
-    // Cursor lerp is merged into the main rAF loop below — no separate loop
-    window._cursorTick = function() {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      // transform: translate() is compositor-only — no layout, no paint
-      cursor.style.transform     = `translate(${mx}px,${my}px)`;
-      cursorRing.style.transform = `translate(${Math.round(rx)}px,${Math.round(ry)}px)`;
-    };
-  }
 
   /* ── Scroll handler (throttled) ── */
   const progress = document.getElementById('scrollProgress');
@@ -527,9 +502,6 @@
         drawStars(t);
         offDirty = false;
       }
-
-      // Tick cursor inside the canvas loop — one rAF instead of two
-      if (window._cursorTick) window._cursorTick();
 
       ctx.clearRect(0, 0, W, H);
       ctx.drawImage(off, 0, 0);
