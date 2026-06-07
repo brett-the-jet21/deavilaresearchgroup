@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <!-- Blocking load so logo never flashes unstyled -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="styles.css?v=5" />
 </head>
 <body>
 
@@ -420,79 +420,74 @@
       offCtx.globalAlpha = 1;
     }
 
-    // Pre-bake shooting star to tiny offscreen canvas — called ONCE per spawn,
-    // not every frame. Eliminates createLinearGradient overhead from the draw loop.
-    function bakeShooter(vx, vy, len) {
-      const slope  = vy / vx;                 // always positive (down-right)
-      const pad    = 6;
-      const bw     = Math.ceil(len) + pad * 2;
-      const bh     = Math.ceil(len * slope) + pad * 2;
-      const bc     = document.createElement('canvas');
+    // Pre-bake shooting star horizontally (tip at right). Rotated at draw time.
+    // One bake per spawn — eliminates gradient cost from the draw loop.
+    function bakeShooter(len) {
+      const pad = 8;
+      const bw  = Math.ceil(len) + pad * 2;
+      const bh  = 22;
+      const bc  = document.createElement('canvas');
       bc.width = bw; bc.height = bh;
-      const bx     = bc.getContext('2d');
+      const bx  = bc.getContext('2d');
+      const cy  = bh / 2;
+      const tx  = bw - pad;   // tip at right
+      const ex  = pad;        // tail at left
 
-      // Tip = leading edge (right side), tail = trailing (left side)
-      const tx = bw - pad, ty = pad;           // tip coords in baked canvas
-      const ex = pad,      ey = bh - pad;      // tail end
-
-      // Outer glow pass (wide, dim) — gives depth without shadowBlur cost
-      const gGlow = bx.createLinearGradient(tx, ty, ex, ey);
-      gGlow.addColorStop(0, 'rgba(255,245,200,0.35)');
-      gGlow.addColorStop(0.3, 'rgba(201,169,110,0.12)');
-      gGlow.addColorStop(1, 'rgba(201,169,110,0)');
+      // Wide glow pass
+      const gGlow = bx.createLinearGradient(tx, cy, ex, cy);
+      gGlow.addColorStop(0,    'rgba(255,245,200,0.42)');
+      gGlow.addColorStop(0.22, 'rgba(201,169,110,0.14)');
+      gGlow.addColorStop(1,    'rgba(201,169,110,0)');
       bx.strokeStyle = gGlow;
-      bx.lineWidth   = isMobile ? 6 : 9;
+      bx.lineWidth   = isMobile ? 7 : 11;
       bx.lineCap     = 'round';
-      bx.beginPath();
-      bx.moveTo(tx, ty);
-      bx.lineTo(ex, ey);
-      bx.stroke();
+      bx.beginPath(); bx.moveTo(tx, cy); bx.lineTo(ex, cy); bx.stroke();
 
-      // Core bright trail
-      const gCore = bx.createLinearGradient(tx, ty, ex, ey);
-      gCore.addColorStop(0,    'rgba(255,252,235,1)');
-      gCore.addColorStop(0.08, 'rgba(230,200,140,0.95)');
-      gCore.addColorStop(0.4,  'rgba(201,169,110,0.6)');
+      // Bright core
+      const gCore = bx.createLinearGradient(tx, cy, ex, cy);
+      gCore.addColorStop(0,    'rgba(255,252,240,1)');
+      gCore.addColorStop(0.06, 'rgba(240,210,150,0.96)');
+      gCore.addColorStop(0.32, 'rgba(201,169,110,0.58)');
       gCore.addColorStop(1,    'rgba(201,169,110,0)');
       bx.strokeStyle = gCore;
-      bx.lineWidth   = isMobile ? 2 : 2.5;
-      bx.beginPath();
-      bx.moveTo(tx, ty);
-      bx.lineTo(ex, ey);
-      bx.stroke();
+      bx.lineWidth   = isMobile ? 2 : 2.6;
+      bx.beginPath(); bx.moveTo(tx, cy); bx.lineTo(ex, cy); bx.stroke();
 
-      // Bright white tip dot
-      const tipR = isMobile ? 2.5 : 3;
+      // White tip
+      const tipR = isMobile ? 2.5 : 3.2;
       bx.fillStyle = 'rgba(255,255,255,0.98)';
-      bx.beginPath();
-      bx.arc(tx, ty, tipR, 0, 6.2832);
-      bx.fill();
+      bx.beginPath(); bx.arc(tx, cy, tipR, 0, 6.2832); bx.fill();
 
-      // Soft halo around tip
-      const halo = bx.createRadialGradient(tx, ty, 0, tx, ty, tipR * 4);
-      halo.addColorStop(0, 'rgba(255,245,200,0.5)');
-      halo.addColorStop(1, 'rgba(255,245,200,0)');
+      // Halo around tip
+      const halo = bx.createRadialGradient(tx, cy, 0, tx, cy, tipR * 4.5);
+      halo.addColorStop(0, 'rgba(255,248,210,0.62)');
+      halo.addColorStop(1, 'rgba(255,248,210,0)');
       bx.fillStyle = halo;
-      bx.beginPath();
-      bx.arc(tx, ty, tipR * 4, 0, 6.2832);
-      bx.fill();
+      bx.beginPath(); bx.arc(tx, cy, tipR * 4.5, 0, 6.2832); bx.fill();
 
-      return { canvas: bc, tipX: tx, tipY: ty };
+      return { canvas: bc, tipX: tx, tipY: cy };
     }
 
     function spawnShooter() {
       if (document.hidden || shooters.length >= (isMobile ? 2 : 3)) return;
-      const vx  = (isMobile ? 4.5 : 5.5) + Math.random() * 4;
-      const vy  = 1.6 + Math.random() * 2.2;
-      const len = isMobile
-        ? 130 + Math.random() * 90
-        : 220 + Math.random() * 160;
-      shooters.push({
-        x:     Math.random() * W * 0.6,
-        y:     Math.random() * H * 0.38,
-        vx, vy, life: 1,
-        baked: bakeShooter(vx, vy, len),
-      });
+      const speed    = (isMobile ? 5.5 : 7.5) + Math.random() * 3.5;
+      // Angle: 28–62 degrees below horizontal — steep enough to look like meteors
+      const deg      = 28 + Math.random() * 34;
+      // Alternate between down-right and down-left for variety
+      const goLeft   = Math.random() > 0.45;
+      // atan2-compatible angle so ctx.rotate() orients the tip correctly
+      const angle    = goLeft
+        ? Math.PI - deg * Math.PI / 180    // tip points lower-left
+        : deg * Math.PI / 180;             // tip points lower-right
+      const vx  = Math.cos(angle) * speed;
+      const vy  = Math.sin(angle) * speed; // always positive (downward)
+      const len = isMobile ? 130 + Math.random() * 90 : 220 + Math.random() * 180;
+      // Spawn in upper portion; left-going stars start from right half
+      const x   = goLeft
+        ? W * 0.45 + Math.random() * W * 0.55
+        : Math.random() * W * 0.55;
+      const y   = Math.random() * H * 0.32;
+      shooters.push({ x, y, vx, vy, angle, life: 1, baked: bakeShooter(len) });
     }
 
     function draw(t) {
@@ -506,15 +501,19 @@
       ctx.clearRect(0, 0, W, H);
       ctx.drawImage(off, 0, 0);
 
-      // Draw pre-baked shooters — just a cheap drawImage per star per frame
+      // Rotate canvas to each star's angle, then drawImage the horizontal bake
       for (let i = shooters.length - 1; i >= 0; i--) {
         const s = shooters[i];
+        ctx.save();
         ctx.globalAlpha = Math.min(1, s.life * 1.1);
-        ctx.drawImage(s.baked.canvas, s.x - s.baked.tipX, s.y - s.baked.tipY);
+        ctx.translate(s.x, s.y);
+        ctx.rotate(s.angle);
+        ctx.drawImage(s.baked.canvas, -s.baked.tipX, -s.baked.tipY);
+        ctx.restore();
         s.x    += s.vx;
         s.y    += s.vy;
-        s.life -= 0.02;
-        if (s.life <= 0 || s.x > W + 20 || s.y > H + 20) shooters.splice(i, 1);
+        s.life -= 0.018;
+        if (s.life <= 0 || s.x > W + 80 || s.x < -80 || s.y > H + 80) shooters.splice(i, 1);
       }
       ctx.globalAlpha = 1;
 

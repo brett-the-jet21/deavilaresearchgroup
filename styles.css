@@ -31,13 +31,7 @@ body {
   line-height: 1.7;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  cursor: none;
 }
-
-/* Custom cursor removed — was competing with canvas rAF every frame */
-.cursor, .cursor-ring { display: none; }
-@media (hover: none) { .cursor, .cursor-ring { display: none; } }
-@media (hover: none) { body { cursor: auto; } }
 
 /* ── Flag bar ── */
 .flag-bar {
@@ -346,7 +340,7 @@ body {
   padding: 16px 40px;
   border-radius: 2px;
   border: none;
-  cursor: none;
+  cursor: pointer;
   transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
   box-shadow: 0 0 40px rgba(201,169,110,0.2);
   text-decoration: none;
@@ -369,7 +363,7 @@ body {
   padding: 16px 8px;
   background: none;
   border: none;
-  cursor: none;
+  cursor: pointer;
   transition: color 0.2s;
   text-decoration: none;
 }
