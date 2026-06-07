@@ -117,25 +117,103 @@ body {
   margin: 0 auto;
 }
 
-.nav-wordmark {
-  display: flex;
-  flex-direction: column;
+.nav-wordmark { display: flex; flex-direction: column; gap: 4px; }
+
+/* ── Navbar logo lockup ── */
+.nav-logo-lockup { display: flex; align-items: baseline; line-height: 1; }
+.nl-star {
+  font-size: 0.52rem;
+  color: var(--gold);
+  margin-right: 6px;
+  position: relative; top: -2px;
 }
-.nav-wordmark-name {
+.nl-de {
   font-family: var(--serif);
-  font-size: 1.15rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  color: var(--white);
-  letter-spacing: 0.04em;
-  line-height: 1.1;
+  font-style: italic;
+  color: var(--cream);
+  letter-spacing: -0.01em;
 }
-.nav-wordmark-tag {
-  font-size: 0.58rem;
+.nl-avila {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--gold);
+  letter-spacing: -0.01em;
+}
+.nl-sub {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.54rem;
+  font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--gold);
+  opacity: 0.7;
+  line-height: 1;
+}
+.nl-rule {
+  display: inline-block;
+  width: 18px; height: 1px;
+  background: var(--gold);
+  opacity: 0.45;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* ── Footer logo lockup ── */
+.footer-logo-lockup { display: flex; align-items: baseline; line-height: 1; margin-bottom: 5px; }
+.fl-star {
+  font-size: 0.6rem;
+  color: var(--gold);
+  margin-right: 7px;
+  position: relative; top: -2px;
+}
+.fl-de {
+  font-family: var(--serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--cream);
+  letter-spacing: -0.01em;
+}
+.fl-avila {
+  font-family: var(--serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--gold);
+  letter-spacing: -0.01em;
+}
+.fl-sub {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.75;
+  margin-bottom: 6px;
+}
+.fl-rule {
+  display: inline-block;
+  width: 22px; height: 1px;
+  background: var(--gold);
+  opacity: 0.45;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.fl-tag {
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
   font-weight: 500;
-  margin-top: 2px;
 }
 
 .nav-links {
@@ -891,20 +969,6 @@ footer {
 }
 
 .footer-brand {}
-.footer-brand-name {
-  font-family: var(--serif);
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--white);
-  margin-bottom: 4px;
-}
-.footer-brand-tag {
-  font-size: 0.58rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold);
-  opacity: 0.7;
-}
 
 .footer-links {
   list-style: none;
